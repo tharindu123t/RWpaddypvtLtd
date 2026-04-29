@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="si">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rukmal Paddy Industry</title>
+    <meta
+      name="description"
+      content="Rukmal Paddy Industry සඳහා ගොවියන්ගෙන් වී මිලදී ගැනීම, ගබඩා කිරීම, ප්‍රවාහනය සහ වැටුප් තොරතුරු සුරැකීමට සරල වෙබ් පද්ධතියක්."
+    />
+    <style>
+      :root {
+        --primary: #059669;
+        --primary-hover: #047857;
+        --secondary: #f59e0b;
+        --bg-color: #f8fafc;
+        --surface: #ffffff;
+        --text-main: #1f2937;
+        --text-muted: #4b5563;
+        --border-color: #e2e8f0;
+        --danger: #ef4444;
+        --success: #10b981;
+        --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        --radius: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* Header */
+      .app-header {
+        background: linear-gradient(135deg, #065f46 0%, #059669 100%);
+        color: white;
+        border-bottom: none;
+        padding: 0.75rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 10;
+        box-shadow: var(--shadow-md);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: white;
+      }
+
+      .brand svg {
+        width: 32px;
+        height: 32px;
+        color: #a7f3d0;
+      }
+
+      .brand span {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand strong {
+        font-size: 1.1rem;
+        line-height: 1.2;
+      }
+
+      .brand small {
+        color: #d1fae5;
+        font-size: 0.75rem;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .save-status {
+        font-size: 0.8rem;
+        color: #a7f3d0;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+      .save-status::before {
+        content: '';
+        display: block;
+        width: 8px;
+        height: 8px;
+        background-color: #34d399;
+        border-radius: 50%;
+        box-shadow: 0 0 6px #34d399;
+      }
+
+      .icon-button {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .icon-button:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-1px);
+      }
+      
+      .file-import input {
+        display: none;
+      }
+
+      /* Layout */
+      .app-shell {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        width: 240px;
+        background-color: var(--surface);
+        border-right: 1px solid var(--border-color);
+        padding: 1rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        overflow-y: auto;
+      }
+
+      .nav-tab {
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        transition: all 0.2s;
+      }
+
+      .nav-tab:hover {
+        background-color: #f1f5f9;
+        color: var(--primary-hover);
+        transform: translateX(4px);
+      }
+
+      .nav-tab.active {
+        background: linear-gradient(90deg, #ecfdf5 0%, transparent 100%);
+        color: var(--primary);
+        border-right: 4px solid var(--primary);
+        font-weight: 600;
+      }
+
+      .content-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2rem;
+      }
+
+      .tab-panel {
+        display: none;
+        max-width: 1200px;
+        margin: 0 auto;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Typography & Headers */
+      .page-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 2rem;
+      }
+
+      .kicker {
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        color: var(--text-main);
+      }
+
+      h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+      }
+
+      /* Buttons */
+      .button {
+        padding: 0.6rem 1.2rem;
+        border-radius: var(--radius);
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+        font-size: 0.95rem;
+      }
+
+      .button.primary {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+        color: white;
+        box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2);
+      }
+
+      .button.primary:hover {
+        background: linear-gradient(135deg, var(--primary-hover) 0%, #064e3b 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 8px -1px rgba(5, 150, 105, 0.3);
+      }
+      
+      .button.secondary {
+        background-color: white;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+      }
+
+      .ghost-button {
+        background: none;
+        border: none;
+        color: var(--primary);
+        font-weight: 500;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+      .ghost-button:hover {
+        text-decoration: underline;
+      }
+
+      /* Metrics Grid */
+      .summary-grid, .report-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .metric-card {
+        background: var(--surface);
+        padding: 1.5rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s;
+      }
+      .metric-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+      }
+      
+      .metric-card:nth-child(1) { border-top: 4px solid #10b981; background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 100%); }
+      .metric-card:nth-child(2) { border-top: 4px solid #3b82f6; background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%); }
+      .metric-card:nth-child(3) { border-top: 4px solid #f59e0b; background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%); }
+      .metric-card:nth-child(4) { border-top: 4px solid #8b5cf6; background: linear-gradient(180deg, #f5f3ff 0%, #ffffff 100%); }
+
+      .metric-card span {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .metric-card strong {
+        font-size: 1.8rem;
+        color: var(--text-main);
+        margin-bottom: 0.25rem;
+      }
+
+      .metric-card small {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+      }
+
+      /* Panels */
+      .panel {
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-top: 3px solid #e2e8f0;
+      }
+      .form-panel { border-top-color: var(--secondary); }
+      .data-panel { border-top-color: var(--primary); }
+
+      .panel-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      /* Layouts */
+      .overview-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+
+      .work-layout {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 1.5rem;
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+
+      /* Forms */
+      form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-main);
+      }
+
+      .full-span {
+        grid-column: 1 / -1;
+      }
+
+      input, select, textarea {
+        padding: 0.6rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        font-family: inherit;
+        font-size: 0.95rem;
+        background-color: var(--surface);
+        transition: border-color 0.2s;
+      }
+
+      input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+      }
+
+      .form-total {
+        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        padding: 1rem;
+        border-radius: var(--radius);
+        border: 1px solid #34d399;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+      }
+      .form-total strong {
+        font-size: 1.25rem;
+        color: #065f46;
+      }
+
+      /* Tables */
+      .table-search {
+        padding: 0.5rem 1rem;
+        width: 250px;
+        border-radius: 20px;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      th, td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      th {
+        background-color: #f9fafb;
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+      }
+
+      td {
+        font-size: 0.95rem;
+      }
+
+      tr:hover td {
+        background-color: #f9fafb;
+      }
+
+      .action-btn {
+        background: none;
+        border: none;
+        color: var(--danger);
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 4px;
+      }
+      .action-btn:hover {
+        background-color: #fee2e2;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .badge.success { background: #d1fae5; color: #065f46; }
+      .badge.warning { background: #fef3c7; color: #92400e; }
+
+      /* Lists */
+      .stock-list, .activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem;
+        background: var(--bg-color);
+        border-radius: var(--radius);
+      }
+
+      /* Inventory Grid */
+      .inventory-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+      }
+      .inv-card {
+        text-align: center;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+        border-radius: var(--radius);
+        border: 1px solid #a7f3d0;
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.2s;
+      }
+      .inv-card:hover {
+        transform: translateY(-2px);
+      }
+      .inv-card h3 {
+        font-size: 1rem;
+        color: #065f46;
+        margin-bottom: 0.5rem;
+      }
+      .inv-card p {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary);
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        background: var(--text-main);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-md);
+        transform: translateY(150%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 50;
+      }
+      .toast.show {
+        transform: translateY(0);
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .overview-layout, .work-layout, .two-column {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 768px) {
+        .app-shell {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+          border-right: none;
+          border-bottom: 1px solid var(--border-color);
+          flex-direction: row;
+          padding: 0.5rem;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+        .nav-tab {
+          width: auto;
+          padding: 0.5rem 1rem;
+          border-right: none;
+          border-bottom: 3px solid transparent;
+        }
+        .nav-tab.active {
+          border-right: none;
+          border-bottom: 3px solid var(--primary);
+        }
+        .page-title {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="#overview" aria-label="Rukmal Paddy Industry මුල් පිටුව">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 20 9-11a5 5 0 0 0-7-7l-2 2-2-2a5 5 0 0 0-7 7l9 11Z"></path><path d="m12 20-3-3"></path></svg>
+        <span>
+          <strong>Rukmal Paddy Industry</strong>
+          <small>මිලදී ගැනීම් සහ ගබඩා කළමනාකරණය</small>
+        </span>
+      </a>
+
+      <div class="header-actions">
+        <span class="save-status" id="save-status">Browser save mode</span>
+        <button class="icon-button" id="export-data" type="button" title="දත්ත export කරන්න" aria-label="දත්ත export කරන්න">
+          <span aria-hidden="true">↓</span>
+        </button>
+        <label class="icon-button file-import" title="දත්ත import කරන්න" aria-label="දත්ත import කරන්න">
+          <span aria-hidden="true">↑</span>
+          <input id="import-data" type="file" accept="application/json" />
+        </label>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="ප්‍රධාන මෙනුව">
+        <button class="nav-tab active" type="button" data-tab="overview">
+          <span aria-hidden="true">▣</span>
+          <span>සාරාංශය</span>
+        </button>
+        <button class="nav-tab" type="button" data-tab="farmers">
+          <span aria-hidden="true">◎</span>
+          <span>ගොවියන්</span>
+        </button>
+        <button class="nav-tab" type="button" data-tab="purchases">
+          <span aria-hidden="true">＋</span>
+          <span>මිලදී ගැනීම්</span>
+        </button>
+        <button class="nav-tab" type="button" data-tab="storage">
+          <span aria-hidden="true">▤</span>
+          <span>ගබඩාව</span>
+        </button>
+        <button class="nav-tab" type="button" data-tab="shipments">
+          <span aria-hidden="true">↗</span>
+          <span>ප්‍රවාහනය</span>
+        </button>
+        <button class="nav-tab" type="button" data-tab="workers">
+          <span aria-hidden="true">◇</span>
+          <span>ගෝලයන්</span>
+        </button>
+        <button class="nav-tab" type="button" data-tab="reports">
+          <span aria-hidden="true">≡</span>
+          <span>වාර්තා</span>
+        </button>
+      </aside>
+
+      <section class="content-area">
+        <!-- Overview Tab -->
+        <section class="tab-panel active" id="overview">
+          <div class="page-title">
+            <div>
+              <p class="kicker">අද තත්ත්වය</p>
+              <h1>වී තොග, ගොවියන් සහ ගෙවීම් එකම තැනක.</h1>
+            </div>
+            <button class="button primary" type="button" data-jump="purchases">
+              <span aria-hidden="true">＋</span>
+              නව මිලදී ගැනීම
+            </button>
+          </div>
+
+          <div class="summary-grid" aria-label="ප්‍රධාන සාරාංශ">
+            <article class="metric-card">
+              <span>මුළු ගබඩා තොගය</span>
+              <strong id="metric-stock">0 kg</strong>
+              <small id="metric-stock-sub">වර්ග අනුව ගණනය කරයි</small>
+            </article>
+            <article class="metric-card">
+              <span>ගොවියන්</span>
+              <strong id="metric-farmers">0</strong>
+              <small>ලියාපදිංචි කර ඇති profiles</small>
+            </article>
+            <article class="metric-card">
+              <span>මිලදී ගත් මුදල</span>
+              <strong id="metric-purchase-value">Rs. 0</strong>
+              <small>සියලු මිලදී ගැනීම් එකතුව</small>
+            </article>
+            <article class="metric-card">
+              <span>ලැබිය යුතු විකුණුම්</span>
+              <strong id="metric-pending-sales">Rs. 0</strong>
+              <small>Pending payments</small>
+            </article>
+          </div>
+
+          <div class="overview-layout">
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>වී වර්ග අනුව තොගය</h2>
+                <button class="ghost-button" type="button" data-jump="storage">ගබඩාව බලන්න</button>
+              </div>
+              <div class="stock-list" id="stock-list">
+                <!-- Populated by JS -->
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>නවතම ගනුදෙනු</h2>
+                <button class="ghost-button" type="button" data-jump="reports">වාර්තා</button>
+              </div>
+              <div class="activity-list" id="activity-list">
+                <!-- Populated by JS -->
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- Farmers Tab -->
+        <section class="tab-panel" id="farmers">
+          <div class="page-title">
+            <div>
+              <p class="kicker">ගොවියන්ගේ profiles</p>
+              <h1>ගොවියාට අදාල මිටි, බර සහ ගෙවීම් ඉතිහාසය.</h1>
+            </div>
+          </div>
+
+          <div class="work-layout">
+            <form class="panel form-panel" id="farmer-form">
+              <h2>ගොවියා ලියාපදිංචි කරන්න</h2>
+              <label>
+                නම
+                <input name="name" type="text" required placeholder="උදා: කමල් පෙරේරා" />
+              </label>
+              <label>
+                දුරකථන අංකය
+                <input name="phone" type="tel" placeholder="07X XXX XXXX" />
+              </label>
+              <label>
+                ගම / ප්‍රදේශය
+                <input name="village" type="text" placeholder="උදා: පොළොන්නරුව" />
+              </label>
+              <label>
+                බැංකු තොරතුරු
+                <input name="bank" type="text" placeholder="ගිණුම් අංකය හෝ බැංකුව" />
+              </label>
+              <label class="full-span">
+                සටහන්
+                <textarea name="notes" rows="2" placeholder="විශේෂ තොරතුරු"></textarea>
+              </label>
+              <button class="button primary full-span" type="submit">
+                <span aria-hidden="true">＋</span>
+                ගොවියා එක් කරන්න
+              </button>
+            </form>
+
+            <section class="panel data-panel">
+              <div class="panel-heading">
+                <h2>ගොවියන්ගේ ලැයිස්තුව</h2>
+                <input class="table-search" id="farmer-search" type="search" placeholder="නම, ගම, දුරකථන අංකය සොයන්න" />
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ගොවියා</th>
+                      <th>ප්‍රදේශය</th>
+                      <th>දුරකථන</th>
+                      <th>මිලදී ගත් බර</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="farmers-table"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- Purchases Tab -->
+        <section class="tab-panel" id="purchases">
+          <div class="page-title">
+            <div>
+              <p class="kicker">වී මිලදී ගැනීම්</p>
+              <h1>ගොවියාගෙන් ගත් මිටි, බර සහ ගෙවිය යුතු මුදල සුරකින්න.</h1>
+            </div>
+          </div>
+
+          <div class="work-layout">
+            <form class="panel form-panel" id="purchase-form">
+              <h2>නව මිලදී ගැනීම</h2>
+              <label>
+                දිනය
+                <input name="date" type="date" required id="p-date" />
+              </label>
+              <label>
+                ගොවියා
+                <select name="farmerId" id="purchase-farmer" required></select>
+              </label>
+              <label>
+                වී වර්ගය
+                <select name="variety" required>
+                  <option value="නාඩු">නාඩු</option>
+                  <option value="සම්බා">සම්බා</option>
+                  <option value="කීරි සම්බා">කීරි සම්බා</option>
+                  <option value="සුදු කැකුළු">සුදු කැකුළු</option>
+                  <option value="රතු කැකුළු">රතු කැකුළු</option>
+                  <option value="වෙනත්">වෙනත්</option>
+                </select>
+              </label>
+              <label>
+                මිටි ගණන
+                <input name="bags" type="number" min="0" step="1" required />
+              </label>
+              <label>
+                මුළු බර kg
+                <input name="weightKg" type="number" min="0" step="0.01" required />
+              </label>
+              <label>
+                kg එකක මිල Rs.
+                <input name="pricePerKg" type="number" min="0" step="0.01" required />
+              </label>
+              <label>
+                තෙතමනය %
+                <input name="moisture" type="number" min="0" step="0.1" placeholder="ඇත්නම්" />
+              </label>
+              <label>
+                පැටවීම / කුලී Rs.
+                <input name="extraCost" type="number" min="0" step="0.01" value="0" />
+              </label>
+              <label>
+                තත්ත්වය
+                <select name="status" required>
+                  <option value="stored">ගබඩාවට දැම්මා</option>
+                  <option value="direct">කෙලින්ම යැව්වා</option>
+                </select>
+              </label>
+              <label>
+                ගබඩා ස්ථානය
+                <input name="location" type="text" placeholder="උදා: ගබඩා 1" />
+              </label>
+              <label class="full-span">
+                සටහන්
+                <textarea name="notes" rows="2" placeholder="බර slip අංකය, payment note"></textarea>
+              </label>
+              <div class="form-total full-span">
+                <span>ගණනය වූ ගොවි මුදල</span>
+                <strong id="purchase-preview">Rs. 0.00</strong>
+              </div>
+              <button class="button primary full-span" type="submit">
+                <span aria-hidden="true">＋</span>
+                මිලදී ගැනීම සුරකින්න
+              </button>
+            </form>
+
+            <section class="panel data-panel">
+              <div class="panel-heading">
+                <h2>මිලදී ගැනීම්</h2>
+                <input class="table-search" id="purchase-search" type="search" placeholder="ගොවියා, වී වර්ගය, දිනය සොයන්න" />
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>දිනය</th>
+                      <th>ගොවියා</th>
+                      <th>වර්ගය</th>
+                      <th>මිටි</th>
+                      <th>බර</th>
+                      <th>මුදල</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="purchases-table"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- Storage Tab -->
+        <section class="tab-panel" id="storage">
+          <div class="page-title">
+            <div>
+              <p class="kicker">ගබඩා තොගය</p>
+              <h1>මිලදී ගත් වී වලින් දැනට ඉතිරි kg ප්‍රමාණය.</h1>
+            </div>
+          </div>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>වර්ග අනුව ගබඩා තත්ත්වය</h2>
+              <button class="ghost-button" type="button" data-jump="shipments">මෝලට යැවීමක් දමන්න</button>
+            </div>
+            <div class="inventory-grid" id="inventory-grid">
+               <!-- Populated by JS -->
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>ගබඩාවට දමා ඇති lot</h2>
+              <input class="table-search" id="storage-search" type="search" placeholder="ගොවියා, ගබඩා ස්ථානය, වර්ගය සොයන්න" />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>දිනය</th>
+                    <th>ගොවියා</th>
+                    <th>වර්ගය</th>
+                    <th>ගබඩා ස්ථානය</th>
+                    <th>බර</th>
+                    <th>ගොවි මුදල</th>
+                  </tr>
+                </thead>
+                <tbody id="storage-table"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <!-- Shipments Tab -->
+        <section class="tab-panel" id="shipments">
+          <div class="page-title">
+            <div>
+              <p class="kicker">මෝල්කරුවන්ට ප්‍රවාහනය</p>
+              <h1>මෝල, වාහනය, විකුණුම් මිල සහ payment status එක සුරකින්න.</h1>
+            </div>
+          </div>
+
+          <div class="work-layout">
+            <form class="panel form-panel" id="shipment-form">
+              <h2>නව ප්‍රවාහනය</h2>
+              <label>
+                දිනය
+                <input name="date" type="date" required id="s-date" />
+              </label>
+              <label>
+                මෝල / ගනුදෙනුකරු
+                <input name="buyer" type="text" required placeholder="උදා: ABC Rice Mill" />
+              </label>
+              <label>
+                වී වර්ගය
+                <select name="variety" required>
+                  <option value="නාඩු">නාඩු</option>
+                  <option value="සම්බා">සම්බා</option>
+                  <option value="කීරි සම්බා">කීරි සම්බා</option>
+                  <option value="සුදු කැකුළු">සුදු කැකුළු</option>
+                  <option value="රතු කැකුළු">රතු කැකුළු</option>
+                  <option value="වෙනත්">වෙනත්</option>
+                </select>
+              </label>
+              <label>
+                යැවූ බර kg
+                <input name="weightKg" type="number" min="0" step="0.01" required />
+              </label>
+              <label>
+                kg එකක විකුණුම් මිල Rs.
+                <input name="salePricePerKg" type="number" min="0" step="0.01" required />
+              </label>
+              <label>
+                ප්‍රවාහන වියදම Rs.
+                <input name="transportCost" type="number" min="0" step="0.01" value="0" />
+              </label>
+              <label>
+                වාහන අංකය
+                <input name="vehicle" type="text" placeholder="උදා: NC-1234" />
+              </label>
+              <label>
+                ගෙවීම් තත්ත්වය
+                <select name="paymentStatus" required>
+                  <option value="pending">තවම ලැබී නැහැ</option>
+                  <option value="paid">ලැබුණා</option>
+                </select>
+              </label>
+              <label class="full-span">
+                සටහන්
+                <textarea name="notes" rows="2" placeholder="invoice, driver details"></textarea>
+              </label>
+              <div class="form-total full-span">
+                <span>ගණනය වූ විකුණුම් මුදල</span>
+                <strong id="shipment-preview">Rs. 0.00</strong>
+              </div>
+              <button class="button primary full-span" type="submit">
+                <span aria-hidden="true">＋</span>
+                ප්‍රවාහනය සුරකින්න
+              </button>
+            </form>
+
+            <section class="panel data-panel">
+              <div class="panel-heading">
+                <h2>ප්‍රවාහන ඉතිහාසය</h2>
+                <input class="table-search" id="shipment-search" type="search" placeholder="මෝල, වාහනය, වී වර්ගය සොයන්න" />
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>දිනය</th>
+                      <th>මෝල</th>
+                      <th>වර්ගය</th>
+                      <th>බර</th>
+                      <th>විකුණුම්</th>
+                      <th>තත්ත්වය</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="shipments-table"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- Workers Tab -->
+        <section class="tab-panel" id="workers">
+          <div class="page-title">
+            <div>
+              <p class="kicker">වැඩ කරන ගෝලයන්</p>
+              <h1>දෛනික වැටුප, advance සහ ගෙවූ වැටුප් සටහන් කරන්න.</h1>
+            </div>
+          </div>
+
+          <div class="two-column">
+            <form class="panel form-panel" id="worker-form">
+              <h2>ගෝලයා ලියාපදිංචි කරන්න</h2>
+              <label>
+                නම
+                <input name="name" type="text" required />
+              </label>
+              <label>
+                වැඩ වර්ගය
+                <input name="role" type="text" placeholder="පැටවීම, රියදුරු, ගබඩා" />
+              </label>
+              <label>
+                දුරකථන අංකය
+                <input name="phone" type="tel" />
+              </label>
+              <label>
+                දිනකට සම්මත වැටුප Rs.
+                <input name="dailyWage" type="number" min="0" step="0.01" required />
+              </label>
+              <button class="button primary full-span" type="submit">
+                <span aria-hidden="true">＋</span>
+                ගෝලයා එක් කරන්න
+              </button>
+            </form>
+
+            <form class="panel form-panel" id="salary-form">
+              <h2>වැටුප් සටහන</h2>
+              <label>
+                දිනය
+                <input name="date" type="date" required id="w-date" />
+              </label>
+              <label>
+                ගෝලයා
+                <select name="workerId" id="salary-worker" required></select>
+              </label>
+              <label>
+                වැඩ කළ දින
+                <input name="days" type="number" min="0" step="0.5" required value="1" />
+              </label>
+              <label>
+                දෛනික වැටුප Rs.
+                <input name="dailyRate" type="number" min="0" step="0.01" required />
+              </label>
+              <label>
+                අමතර ගෙවීම් Rs.
+                <input name="allowance" type="number" min="0" step="0.01" value="0" />
+              </label>
+              <label>
+                Advance අඩුකිරීම් Rs.
+                <input name="advance" type="number" min="0" step="0.01" value="0" />
+              </label>
+              <label class="full-span">
+                සටහන්
+                <textarea name="notes" rows="2"></textarea>
+              </label>
+              <div class="form-total full-span">
+                <span>ගෙවිය යුතු ශුද්ධ වැටුප</span>
+                <strong id="salary-preview">Rs. 0.00</strong>
+              </div>
+              <button class="button primary full-span" type="submit">
+                <span aria-hidden="true">＋</span>
+                වැටුප සුරකින්න
+              </button>
+            </form>
+          </div>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>ගෝලයන්ගේ ලැයිස්තුව සහ වැටුප්</h2>
+              <input class="table-search" id="worker-search" type="search" placeholder="නම හෝ වැඩ වර්ගය සොයන්න" />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ගෝලයා</th>
+                    <th>වැඩ වර්ගය</th>
+                    <th>දෛනික වැටුප</th>
+                    <th>ගෙවූ එකතුව</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="workers-table"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <!-- Reports Tab -->
+        <section class="tab-panel" id="reports">
+          <div class="page-title">
+            <div>
+              <p class="kicker">සම්පූර්ණ වාර්තා</p>
+              <h1>මිලදී ගැනීම්, විකුණුම් සහ වැටුප් වෙන් වෙන්ව බලන්න.</h1>
+            </div>
+            <button class="button secondary" id="load-demo" type="button">
+              <span aria-hidden="true">＋</span>
+              ආදර්ශ දත්ත
+            </button>
+          </div>
+
+          <div class="report-grid">
+            <article class="metric-card">
+              <span>විකුණුම් මුදල</span>
+              <strong id="report-sales">Rs. 0</strong>
+              <small>ප්‍රවාහන වියදම අඩු කිරීමට පෙර</small>
+            </article>
+            <article class="metric-card">
+              <span>ප්‍රවාහන වියදම</span>
+              <strong id="report-transport">Rs. 0</strong>
+              <small>සියලු යැවීම් වල එකතුව</small>
+            </article>
+            <article class="metric-card">
+              <span>වැටුප් ගෙවීම්</span>
+              <strong id="report-salaries">Rs. 0</strong>
+              <small>ගෝලයන්ට ගෙවූ එකතුව</small>
+            </article>
+            <article class="metric-card">
+              <span>දළ ලාභය / අලාභය</span>
+              <strong id="report-profit">Rs. 0</strong>
+              <small>විකුණුම් - මිලදී ගැනීම් - වියදම්</small>
+            </article>
+          </div>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>සියලු ගනුදෙනු කාල සටහන</h2>
+              <input class="table-search" id="report-search" type="search" placeholder="දිනය, නම, විස්තර සොයන්න" />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>දිනය</th>
+                    <th>වර්ගය</th>
+                    <th>විස්තර</th>
+                    <th>බර / දින</th>
+                    <th>මුදල (Rs.)</th>
+                  </tr>
+                </thead>
+                <tbody id="reports-table"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      // --- Initialization & State Management ---
+      const initialState = {
+        farmers: [],
+        purchases: [],
+        shipments: [],
+        workers: [],
+        salaries: []
+      };
+
+      let db = JSON.parse(localStorage.getItem('rukmal_db')) || initialState;
+
+      function saveDB() {
+        localStorage.setItem('rukmal_db', JSON.stringify(db));
+        showToast("දත්ත සුරකින ලදී.");
+        updateAllViews();
+      }
+
+      function generateId() {
+        return Math.random().toString(36).substr(2, 9);
+      }
+
+      function formatMoney(amount) {
+        return new Intl.NumberFormat('en-LK', { style: 'currency', currency: 'LKR' }).format(amount).replace('LKR', 'Rs.');
+      }
+
+      function formatDate(dateStr) {
+        if(!dateStr) return '';
+        const d = new Date(dateStr);
+        return d.toLocaleDateString('si-LK') || dateStr;
+      }
+
+      // Set today's date on inputs
+      const today = new Date().toISOString().split('T');
+      document.getElementById('p-date').value = today;
+      document.getElementById('s-date').value = today;
+      document.getElementById('w-date').value = today;
+
+      // --- Toast Notifications ---
+      const toastEl = document.getElementById('toast');
+      let toastTimeout;
+      function showToast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toastEl.classList.remove('show');
+        }, 3000);
+      }
+
+      // --- Navigation & Tabs ---
+      const tabs = document.querySelectorAll('.nav-tab');
+      const panels = document.querySelectorAll('.tab-panel');
+      
+      function switchTab(tabId) {
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        
+        const activeTab = document.querySelector(`.nav-tab[data-tab="${tabId}"]`);
+        const activePanel = document.getElementById(tabId);
+        
+        if (activeTab && activePanel) {
+          activeTab.classList.add('active');
+          activePanel.classList.add('active');
+        }
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          switchTab(tab.dataset.tab);
+        });
+      });
+
+      document.querySelectorAll('[data-jump]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          switchTab(btn.dataset.jump);
+        });
+      });
+
+      // --- Form Handlers ---
+
+      // Farmer Form
+      document.getElementById('farmer-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        db.farmers.push({
+          id: generateId(),
+          name: fd.get('name'),
+          phone: fd.get('phone'),
+          village: fd.get('village'),
+          bank: fd.get('bank'),
+          notes: fd.get('notes'),
+          createdAt: new Date().toISOString()
+        });
+        e.target.reset();
+        saveDB();
+      });
+
+      // Purchase Form Calculation
+      const purchaseForm = document.getElementById('purchase-form');
+      const pPreview = document.getElementById('purchase-preview');
+      function calcPurchase() {
+        const weight = parseFloat(purchaseForm.querySelector('[name="weightKg"]').value) || 0;
+        const price = parseFloat(purchaseForm.querySelector('[name="pricePerKg"]').value) || 0;
+        const extra = parseFloat(purchaseForm.querySelector('[name="extraCost"]').value) || 0;
+        pPreview.textContent = formatMoney((weight * price) - extra);
+      }
+      purchaseForm.addEventListener('input', calcPurchase);
+
+      purchaseForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        db.purchases.push({
+          id: generateId(),
+          date: fd.get('date'),
+          farmerId: fd.get('farmerId'),
+          variety: fd.get('variety'),
+          bags: parseInt(fd.get('bags')),
+          weightKg: parseFloat(fd.get('weightKg')),
+          pricePerKg: parseFloat(fd.get('pricePerKg')),
+          moisture: parseFloat(fd.get('moisture')) || null,
+          extraCost: parseFloat(fd.get('extraCost')) || 0,
+          status: fd.get('status'),
+          location: fd.get('location'),
+          notes: fd.get('notes')
+        });
+        e.target.reset();
+        document.getElementById('p-date').value = today;
+        pPreview.textContent = 'Rs. 0.00';
+        saveDB();
+        switchTab('storage');
+      });
+
+      // Shipment Form Calculation
+      const shipmentForm = document.getElementById('shipment-form');
+      const sPreview = document.getElementById('shipment-preview');
+      function calcShipment() {
+        const weight = parseFloat(shipmentForm.querySelector('[name="weightKg"]').value) || 0;
+        const price = parseFloat(shipmentForm.querySelector('[name="salePricePerKg"]').value) || 0;
+        sPreview.textContent = formatMoney(weight * price);
+      }
+      shipmentForm.addEventListener('input', calcShipment);
+
+      shipmentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        db.shipments.push({
+          id: generateId(),
+          date: fd.get('date'),
+          buyer: fd.get('buyer'),
+          variety: fd.get('variety'),
+          weightKg: parseFloat(fd.get('weightKg')),
+          salePricePerKg: parseFloat(fd.get('salePricePerKg')),
+          transportCost: parseFloat(fd.get('transportCost')) || 0,
+          vehicle: fd.get('vehicle'),
+          paymentStatus: fd.get('paymentStatus'),
+          notes: fd.get('notes')
+        });
+        e.target.reset();
+        document.getElementById('s-date').value = today;
+        sPreview.textContent = 'Rs. 0.00';
+        saveDB();
+      });
+
+      // Worker Form
+      document.getElementById('worker-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        db.workers.push({
+          id: generateId(),
+          name: fd.get('name'),
+          role: fd.get('role'),
+          phone: fd.get('phone'),
+          dailyWage: parseFloat(fd.get('dailyWage'))
+        });
+        e.target.reset();
+        saveDB();
+      });
+
+      // Worker Salary Auto-fill & Calculation
+      const salaryForm = document.getElementById('salary-form');
+      const salaryPreview = document.getElementById('salary-preview');
+      const salaryWorkerSelect = document.getElementById('salary-worker');
+      const dailyRateInput = salaryForm.querySelector('[name="dailyRate"]');
+
+      salaryWorkerSelect.addEventListener('change', (e) => {
+        const worker = db.workers.find(w => w.id === e.target.value);
+        if (worker) dailyRateInput.value = worker.dailyWage;
+        calcSalary();
+      });
+
+      function calcSalary() {
+        const days = parseFloat(salaryForm.querySelector('[name="days"]').value) || 0;
+        const rate = parseFloat(dailyRateInput.value) || 0;
+        const allow = parseFloat(salaryForm.querySelector('[name="allowance"]').value) || 0;
+        const advance = parseFloat(salaryForm.querySelector('[name="advance"]').value) || 0;
+        salaryPreview.textContent = formatMoney((days * rate) + allow - advance);
+      }
+      salaryForm.addEventListener('input', calcSalary);
+
+      salaryForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        db.salaries.push({
+          id: generateId(),
+          date: fd.get('date'),
+          workerId: fd.get('workerId'),
+          days: parseFloat(fd.get('days')),
+          dailyRate: parseFloat(fd.get('dailyRate')),
+          allowance: parseFloat(fd.get('allowance')) || 0,
+          advance: parseFloat(fd.get('advance')) || 0,
+          notes: fd.get('notes')
+        });
+        e.target.reset();
+        document.getElementById('w-date').value = today;
+        salaryPreview.textContent = 'Rs. 0.00';
+        saveDB();
+      });
+
+
+      // --- View Updaters ---
+
+      function updateSelects() {
+        const pFarmer = document.getElementById('purchase-farmer');
+        pFarmer.innerHTML = '<option value="" disabled selected>ගොවියා තෝරන්න...</option>';
+        db.farmers.forEach(f => {
+          pFarmer.innerHTML += `<option value="${f.id}">${f.name} - ${f.village}</option>`;
+        });
+
+        const sWorker = document.getElementById('salary-worker');
+        sWorker.innerHTML = '<option value="" disabled selected>ගෝලයා තෝරන්න...</option>';
+        db.workers.forEach(w => {
+          sWorker.innerHTML += `<option value="${w.id}">${w.name} (${w.role})</option>`;
+        });
+      }
+
+      function deleteItem(collection, id) {
+        if(confirm('මෙම දත්තය මකා දැමීමට අවශ්‍යද?')) {
+          db[collection] = db[collection].filter(item => item.id !== id);
+          saveDB();
+        }
+      }
+
+      function updateAllViews() {
+        updateSelects();
+        
+        // Data aggregates
+        const varieties = [...new Set([...db.purchases.map(p => p.variety), ...db.shipments.map(s => s.variety)])];
+        let totalStock = 0;
+        let totalPurchaseVal = 0;
+        let pendingSalesVal = 0;
+        let stockByVariety = {};
+        
+        varieties.forEach(v => stockByVariety[v] = 0);
+
+        db.purchases.forEach(p => {
+          if (p.status === 'stored') {
+             totalStock += p.weightKg;
+             if(stockByVariety[p.variety] !== undefined) stockByVariety[p.variety] += p.weightKg;
+          }
+          totalPurchaseVal += (p.weightKg * p.pricePerKg) - p.extraCost;
+        });
+
+        db.shipments.forEach(s => {
+           if(stockByVariety[s.variety] !== undefined) stockByVariety[s.variety] -= s.weightKg;
+           totalStock -= s.weightKg;
+           if(s.paymentStatus === 'pending') {
+             pendingSalesVal += (s.weightKg * s.salePricePerKg);
+           }
+        });
+
+        // Overview
+        document.getElementById('metric-stock').textContent = `${totalStock.toFixed(1)} kg`;
+        document.getElementById('metric-farmers').textContent = db.farmers.length;
+        document.getElementById('metric-purchase-value').textContent = formatMoney(totalPurchaseVal);
+        document.getElementById('metric-pending-sales').textContent = formatMoney(pendingSalesVal);
+
+        const stockListEl = document.getElementById('stock-list');
+        const invGridEl = document.getElementById('inventory-grid');
+        stockListEl.innerHTML = '';
+        invGridEl.innerHTML = '';
+        
+        for (const [v, amount] of Object.entries(stockByVariety)) {
+          if (amount > 0 || db.purchases.some(p => p.variety === v)) {
+             stockListEl.innerHTML += `
+               <div class="list-item">
+                 <span>${v}</span>
+                 <strong>${amount.toFixed(1)} kg</strong>
+               </div>`;
+             invGridEl.innerHTML += `
+               <div class="inv-card">
+                  <h3>${v}</h3>
+                  <p>${amount.toFixed(1)} kg</p>
+               </div>
+             `;
+          }
+        }
+        if(stockListEl.innerHTML === '') {
+           stockListEl.innerHTML = '<p style="color:var(--text-muted)">ගබඩාවේ තොග නොමැත.</p>';
+           invGridEl.innerHTML = '<p style="color:var(--text-muted)">ගබඩාවේ තොග නොමැත.</p>';
+        }
+
+        // Recent Activity
+        const allActs = [
+          ...db.purchases.map(p => ({...p, type: 'මිලදී ගැනීම', dateObj: new Date(p.date)})),
+          ...db.shipments.map(s => ({...s, type: 'ප්‍රවාහනය', dateObj: new Date(s.date)})),
+          ...db.salaries.map(s => ({...s, type: 'වැටුප්', dateObj: new Date(s.date)}))
+        ].sort((a,b) => b.dateObj - a.dateObj).slice(0, 5);
+
+        const actListEl = document.getElementById('activity-list');
+        actListEl.innerHTML = allActs.length ? '' : '<p style="color:var(--text-muted)">මෑත ගනුදෙනු නොමැත.</p>';
+        allActs.forEach(a => {
+           let desc = '';
+           if(a.type === 'මිලදී ගැනීම') {
+             const f = db.farmers.find(f=>f.id===a.farmerId);
+             desc = `${f ? f.name : 'Unkown'} ගෙන් ${a.variety} ${a.weightKg}kg`;
+           } else if (a.type === 'ප්‍රවාහනය') {
+             desc = `${a.buyer} ට ${a.variety} ${a.weightKg}kg`;
+           } else {
+             const w = db.workers.find(w=>w.id===a.workerId);
+             desc = `${w ? w.name : 'Unknown'} ට ගෙවීමක්`;
+           }
+           actListEl.innerHTML += `
+             <div class="list-item">
+                <div>
+                  <div style="font-weight: 500; font-size: 0.9rem;">${a.type}</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);">${desc}</div>
+                </div>
+                <div style="font-size: 0.8rem; text-align:right;">${formatDate(a.date)}</div>
+             </div>
+           `;
+        });
+
+        // Farmers Table
+        const ftb = document.getElementById('farmers-table');
+        ftb.innerHTML = '';
+        db.farmers.forEach(f => {
+          const purchases = db.purchases.filter(p => p.farmerId === f.id);
+          const totalKg = purchases.reduce((sum, p) => sum + p.weightKg, 0);
+          ftb.innerHTML += `
+            <tr>
+              <td><strong>${f.name}</strong></td>
+              <td>${f.village || '-'}</td>
+              <td>${f.phone || '-'}</td>
+              <td>${totalKg.toFixed(1)} kg</td>
+              <td><button class="action-btn" onclick="deleteItem('farmers', '${f.id}')">✕</button></td>
+            </tr>
+          `;
+        });
+
+        // Purchases Table
+        const ptb = document.getElementById('purchases-table');
+        const stb = document.getElementById('storage-table'); // Storage tab table
+        ptb.innerHTML = '';
+        stb.innerHTML = '';
+        db.purchases.slice().reverse().forEach(p => {
+          const farmer = db.farmers.find(f => f.id === p.farmerId);
+          const fName = farmer ? farmer.name : 'Unknown';
+          const amount = (p.weightKg * p.pricePerKg) - p.extraCost;
+          
+          const pRow = `
+            <tr>
+              <td>${formatDate(p.date)}</td>
+              <td>${fName}</td>
+              <td>${p.variety}</td>
+              <td>${p.bags}</td>
+              <td>${p.weightKg}</td>
+              <td>${formatMoney(amount)}</td>
+              <td><button class="action-btn" onclick="deleteItem('purchases', '${p.id}')">✕</button></td>
+            </tr>
+          `;
+          ptb.innerHTML += pRow;
+
+          if (p.status === 'stored') {
+            stb.innerHTML += `
+              <tr>
+                <td>${formatDate(p.date)}</td>
+                <td>${fName}</td>
+                <td>${p.variety}</td>
+                <td>${p.location || '-'}</td>
+                <td>${p.weightKg} kg</td>
+                <td>${formatMoney(amount)}</td>
+              </tr>
+            `;
+          }
+        });
+
+        // Shipments Table
+        const shtb = document.getElementById('shipments-table');
+        shtb.innerHTML = '';
+        db.shipments.slice().reverse().forEach(s => {
+          const amount = s.weightKg * s.salePricePerKg;
+          const statusBadge = s.paymentStatus === 'paid' 
+            ? `<span class="badge success">Paid</span>` 
+            : `<span class="badge warning">Pending</span>`;
+          shtb.innerHTML += `
+            <tr>
+              <td>${formatDate(s.date)}</td>
+              <td>${s.buyer}</td>
+              <td>${s.variety}</td>
+              <td>${s.weightKg} kg</td>
+              <td>${formatMoney(amount)}</td>
+              <td>${statusBadge}</td>
+              <td><button class="action-btn" onclick="deleteItem('shipments', '${s.id}')">✕</button></td>
+            </tr>
+          `;
+        });
+
+        // Workers Table
+        const wtb = document.getElementById('workers-table');
+        wtb.innerHTML = '';
+        db.workers.forEach(w => {
+          const sals = db.salaries.filter(s => s.workerId === w.id);
+          const totalPaid = sals.reduce((sum, s) => sum + (s.days * s.dailyRate) + s.allowance - s.advance, 0);
+          wtb.innerHTML += `
+            <tr>
+              <td><strong>${w.name}</strong></td>
+              <td>${w.role || '-'}</td>
+              <td>${formatMoney(w.dailyWage)}</td>
+              <td>${formatMoney(totalPaid)}</td>
+              <td><button class="action-btn" onclick="deleteItem('workers', '${w.id}')">✕</button></td>
+            </tr>
+          `;
+        });
+
+        // Reports
+        let rSales = 0, rTrans = 0, rSalaries = 0;
+        db.shipments.forEach(s => {
+          rSales += (s.weightKg * s.salePricePerKg);
+          rTrans += s.transportCost;
+        });
+        db.salaries.forEach(s => {
+          rSalaries += (s.days * s.dailyRate) + s.allowance - s.advance;
+        });
+        
+        document.getElementById('report-sales').textContent = formatMoney(rSales);
+        document.getElementById('report-transport').textContent = formatMoney(rTrans);
+        document.getElementById('report-salaries').textContent = formatMoney(rSalaries);
+        document.getElementById('report-profit').textContent = formatMoney(rSales - totalPurchaseVal - rTrans - rSalaries);
+
+        // All transactions table
+        const rtb = document.getElementById('reports-table');
+        rtb.innerHTML = '';
+        const allTrans = [
+          ...db.purchases.map(p => ({
+            date: p.date, type: 'මිලදී ගැනීම', 
+            desc: `${(db.farmers.find(f=>f.id===p.farmerId)||{}).name || 'Unknown'} - ${p.variety}`,
+            qty: `${p.weightKg} kg`, amount: -((p.weightKg * p.pricePerKg) - p.extraCost)
+          })),
+          ...db.shipments.map(s => ({
+            date: s.date, type: 'විකුණුම්', desc: `${s.buyer} - ${s.variety}`,
+            qty: `${s.weightKg} kg`, amount: (s.weightKg * s.salePricePerKg)
+          })),
+          ...db.salaries.map(s => ({
+            date: s.date, type: 'වැටුප්', desc: `${(db.workers.find(w=>w.id===s.workerId)||{}).name || 'Unknown'}`,
+            qty: `${s.days} දින`, amount: -((s.days * s.dailyRate) + s.allowance - s.advance)
+          }))
+        ].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+        allTrans.forEach(t => {
+          const color = t.amount >= 0 ? 'var(--success)' : 'var(--danger)';
+          rtb.innerHTML += `
+            <tr>
+              <td>${formatDate(t.date)}</td>
+              <td>${t.type}</td>
+              <td>${t.desc}</td>
+              <td>${t.qty}</td>
+              <td style="color:${color}; font-weight:bold;">${formatMoney(Math.abs(t.amount))}</td>
+            </tr>
+          `;
+        });
+      }
+
+      // --- Search / Filter Functions ---
+      function setupSearch(inputId, tableId) {
+        document.getElementById(inputId).addEventListener('input', function(e) {
+          const term = e.target.value.toLowerCase();
+          const rows = document.getElementById(tableId).getElementsByTagName('tr');
+          for(let i=0; i<rows.length; i++) {
+            const text = rows[i].textContent.toLowerCase();
+            rows[i].style.display = text.includes(term) ? '' : 'none';
+          }
+        });
+      }
+
+      setupSearch('farmer-search', 'farmers-table');
+      setupSearch('purchase-search', 'purchases-table');
+      setupSearch('storage-search', 'storage-table');
+      setupSearch('shipment-search', 'shipments-table');
+      setupSearch('worker-search', 'workers-table');
+      setupSearch('report-search', 'reports-table');
+
+
+      // --- Export / Import ---
+      document.getElementById('export-data').addEventListener('click', () => {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+        const dlAnchorElem = document.createElement('a');
+        dlAnchorElem.setAttribute("href", dataStr);
+        dlAnchorElem.setAttribute("download", `rukmal_paddy_backup_${new Date().toISOString().split('T')}.json`);
+        dlAnchorElem.click();
+      });
+
+      document.getElementById('import-data').addEventListener('change', (e) => {
+        const file = e.target.files;
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const importedData = JSON.parse(event.target.result);
+            if(importedData.farmers && importedData.purchases) {
+              db = importedData;
+              saveDB();
+              alert("දත්ත සාර්ථකව Import කරන ලදී!");
+            } else {
+              alert("Invalid backup file.");
+            }
+          } catch(err) {
+            alert("Error parsing file.");
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      // --- Demo Data ---
+      document.getElementById('load-demo').addEventListener('click', () => {
+        if(confirm('පවතින දත්ත මකා දමා ආදර්ශ දත්ත ඇතුලත් කිරීමට අවශ්‍යද?')) {
+          const f1 = generateId(), f2 = generateId();
+          const w1 = generateId();
+          db = {
+            farmers: [
+              { id: f1, name: "නිමල් සිරිපාල", phone: "0711234567", village: "අනුරාධපුර", bank: "", notes: "", createdAt: new Date().toISOString() },
+              { id: f2, name: "කමල් පෙරේරා", phone: "0777654321", village: "පොළොන්නරුව", bank: "", notes: "", createdAt: new Date().toISOString() }
+            ],
+            purchases: [
+              { id: generateId(), date: today, farmerId: f1, variety: "නාඩු", bags: 50, weightKg: 3200, pricePerKg: 105, moisture: 14, extraCost: 1500, status: "stored", location: "ගබඩාව A", notes: "" },
+              { id: generateId(), date: today, farmerId: f2, variety: "සම්බා", bags: 30, weightKg: 1950, pricePerKg: 120, moisture: 13, extraCost: 0, status: "stored", location: "ගබඩාව B", notes: "" }
+            ],
+            shipments: [
+              { id: generateId(), date: today, buyer: "Aruna Rice Mill", variety: "නාඩු", weightKg: 2000, salePricePerKg: 115, transportCost: 5000, vehicle: "EP-5678", paymentStatus: "paid", notes: "" }
+            ],
+            workers: [
+              { id: w1, name: "සුනිල්", role: "පැටවීම", phone: "", dailyWage: 2500 }
+            ],
+            salaries: [
+              { id: generateId(), date: today, workerId: w1, days: 1, dailyRate: 2500, allowance: 500, advance: 0, notes: "" }
+            ]
+          };
+          saveDB();
+        }
+      });
+
+      // Init
+      updateAllViews();
+
+    </script>
+  </body>
+</html>
